@@ -73,7 +73,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>oscm-identity</finalName>
+        <finalName>oscm-mail</finalName>
     </build>
 
 </project>
