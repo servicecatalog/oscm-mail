@@ -22,7 +22,9 @@ public class MainController {
   @RequestMapping("/")
   public String index() throws UnknownHostException {
     String host = InetAddress.getLocalHost().getHostName();
-    return "redirect:https://" + host + "/mail";
+    // return "redirect:https://" + host + "/mail";
+    System.out.println("HOST: "+host);
+    return "index";
   }
 
   @RequestMapping("/email")
