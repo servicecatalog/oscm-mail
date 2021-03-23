@@ -19,7 +19,6 @@ public class OSCMAuthenticationProvider implements AuthenticationProvider {
     String password = authentication.getCredentials().toString();
 
     //TODO: authenticate with OSCM using SOAP API
-
     boolean validCredentials = true;
 
     if (validCredentials) {

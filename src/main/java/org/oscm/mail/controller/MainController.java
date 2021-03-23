@@ -5,12 +5,13 @@ import org.oscm.mail.json.Email;
 import org.oscm.mail.provider.EmailProvider;
 import org.oscm.mail.provider.MaildevEmailProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.InetAddress;
+import javax.servlet.http.HttpServletRequest;
 import java.net.UnknownHostException;
 import java.util.List;
 
@@ -19,12 +20,12 @@ public class MainController {
 
   @Autowired private AuthenticationContext authContext;
 
+  @Value("${hostname}")
+  private String hostname;
+
   @RequestMapping("/")
-  public String index() throws UnknownHostException {
-    String host = InetAddress.getLocalHost().getHostName();
-    // return "redirect:https://" + host + "/mail";
-    System.out.println("HOST: "+host);
-    return "index";
+  public String index(HttpServletRequest req) throws UnknownHostException {
+    return "redirect:https://" + this.hostname + "/mail";
   }
 
   @RequestMapping("/email")

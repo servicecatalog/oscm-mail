@@ -7,6 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class AuthController {
 
@@ -15,7 +17,7 @@ public class AuthController {
   @Autowired private AuthenticationContext authContext;
 
   @GetMapping("/auth")
-  public ResponseEntity isAuthenticated() {
+  public ResponseEntity isAuthenticated(HttpServletRequest req) {
 
     Authentication authentication = authContext.getAuthentication();
 
