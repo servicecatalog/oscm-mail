@@ -11,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
-import java.net.UnknownHostException;
 import java.util.List;
 
 @Controller
@@ -20,12 +18,12 @@ public class MainController {
 
   @Autowired private AuthenticationContext authContext;
 
-  @Value("${hostname}")
-  private String hostname;
+  @Value("${OSCM_MAIL_URL}")
+  private String mailUrl;
 
   @RequestMapping("/")
-  public String index(HttpServletRequest req) throws UnknownHostException {
-    return "redirect:https://" + this.hostname + "/mail";
+  public String index() {
+    return "redirect:" + this.mailUrl;
   }
 
   @RequestMapping("/email")
