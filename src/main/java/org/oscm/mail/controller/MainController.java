@@ -23,7 +23,9 @@ public class MainController {
 
   @RequestMapping("/")
   public String index() {
-    return "redirect:" + this.mailUrl;
+
+    Object username = authContext.getAuthentication().getPrincipal();
+    return "redirect:" + this.mailUrl + "/user?filter=" + username;
   }
 
   @RequestMapping("/email")
