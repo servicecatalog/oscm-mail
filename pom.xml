@@ -44,16 +44,19 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.7.1</version>
-            <scope>test</scope>
+            <groupId>com.github.servicecatalog.oscm-commons</groupId>
+            <artifactId>oscm-common</artifactId>
+            <version>master-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>3.7.7</version>
-            <scope>test</scope>
+            <groupId>com.github.servicecatalog.oscm-interfaces</groupId>
+            <artifactId>oscm-extsvc</artifactId>
+            <version>master-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-osgi-locator</artifactId>
+            <version>1.1</version>
         </dependency>
     </dependencies>
 
@@ -75,5 +78,12 @@
         </plugins>
         <finalName>oscm-mail</finalName>
     </build>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
 </project>
