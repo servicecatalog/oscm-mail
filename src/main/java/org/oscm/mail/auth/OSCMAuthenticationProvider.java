@@ -2,6 +2,7 @@ package org.oscm.mail.auth;
 
 import org.oscm.intf.IdentityService;
 import org.oscm.mail.client.WSClient;
+import org.oscm.types.enumtypes.UserRoleType;
 import org.oscm.vo.VOUserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,23 +15,29 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class OSCMAuthenticationProvider implements AuthenticationProvider {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(OSCMAuthenticationProvider.class);
+  private WSClient wsClient;
+
+  public OSCMAuthenticationProvider(WSClient wsClient) {
+    this.wsClient = wsClient;
+  }
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+
     String userKey = authentication.getName();
     String userPwd = authentication.getCredentials().toString();
     String authMode = "INTERNAL";
 
-    // TODO: authenticate with OSCM using SOAP API
-    IdentityService identityService;
-
     try {
-      identityService = WSClient.getWS(authMode, IdentityService.class, userKey, userPwd);
+      IdentityService identityService = wsClient.getIdentityService(authMode, userKey, userPwd);
       VOUserDetails user = identityService.getCurrentUserDetails();
 
       if (!userKey.equals(String.valueOf(user.getKey()))
@@ -45,7 +52,17 @@ public class OSCMAuthenticationProvider implements AuthenticationProvider {
                 + user.getEMail());
         throw new BadCredentialsException("Invalid credentials");
       }
-      return new UsernamePasswordAuthenticationToken(user.getEMail(), userPwd, new ArrayList<>());
+      Set<String> emails = new HashSet<>();
+      emails.add(user.getEMail());
+
+      if (user.getUserRoles().contains(UserRoleType.ORGANIZATION_ADMIN)) {
+        emails.addAll(
+            identityService.getUsersForOrganization().stream()
+                .map(VOUserDetails::getEMail)
+                .collect(Collectors.toSet()));
+      }
+
+      return new UsernamePasswordAuthenticationToken(emails, userPwd, new ArrayList<>());
     } catch (Exception e) {
       LOGGER.error(e.getMessage(), e);
       throw new AuthenticationServiceException(
