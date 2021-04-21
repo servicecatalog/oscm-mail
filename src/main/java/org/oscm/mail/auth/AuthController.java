@@ -1,3 +1,6 @@
+/*******************************************************************************
+ *  Copyright FUJITSU LIMITED 2021
+ *******************************************************************************/
 package org.oscm.mail.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;

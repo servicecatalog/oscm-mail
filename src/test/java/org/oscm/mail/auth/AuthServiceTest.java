@@ -1,3 +1,6 @@
+/*******************************************************************************
+ *  Copyright FUJITSU LIMITED 2021
+ *******************************************************************************/
 package org.oscm.mail.auth;
 
 import org.junit.jupiter.api.Test;
@@ -10,8 +13,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

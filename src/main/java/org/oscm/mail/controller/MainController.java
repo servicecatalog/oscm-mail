@@ -1,3 +1,6 @@
+/*******************************************************************************
+ *  Copyright FUJITSU LIMITED 2021
+ *******************************************************************************/
 package org.oscm.mail.controller;
 
 import org.oscm.mail.auth.AuthService;
