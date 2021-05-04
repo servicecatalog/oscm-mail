@@ -1,6 +1,10 @@
-/*******************************************************************************
- *  Copyright FUJITSU LIMITED 2021
- *******************************************************************************/
+/**
+ * ****************************************************************************
+ *
+ * <p>Copyright FUJITSU LIMITED 2021
+ *
+ * <p>*************************************************************************
+ */
 package org.oscm.mail.configuration;
 
 import org.oscm.mail.auth.OSCMAuthenticationProvider;
@@ -22,6 +26,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     auth.authenticationProvider(authProvider);
   }
 
+  @Autowired SecurityHandler successHandler;
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
@@ -35,6 +41,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .logout()
         .permitAll()
+        .and()
+        .sessionManagement()
+        .sessionFixation()
+        .migrateSession()
         .and()
         .csrf()
         .disable();
