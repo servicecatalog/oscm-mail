@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
 import java.util.HashSet;
@@ -21,67 +22,81 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
 
-  @Spy private AuthService authService = new AuthService();
+    @Spy
+    private AuthService authService = new AuthService();
 
-  @Test
-  void testIsUserAlreadyAuthenticated_whenAnonymousUser() {
-    // given
-    Authentication authentication = mock(Authentication.class);
-    when(authService.getAuthentication()).thenReturn(authentication);
-    when(authentication.getPrincipal()).thenReturn("anonymousUser");
+    @Test
+    void testIsUserAlreadyAuthenticated_whenAnonymousUser() {
+        // given
+        givenAnonymousAuthentication();
 
-    // when
-    boolean authenticated = authService.isUserAlreadyAuthenticated();
+        // when
+        boolean authenticated = authService.isUserAlreadyAuthenticated();
 
-    // then
-    assertFalse(authenticated);
-  }
+        // then
+        assertFalse(authenticated);
+    }
 
-  @Test
-  void testIsUserAlreadyAuthenticated_whenUsersExist() {
-    // given
-    Authentication authentication = mock(Authentication.class);
-    when(authService.getAuthentication()).thenReturn(authentication);
-    HashSet<String> users = new HashSet<>();
-    users.add("test1@oscm.org");
-    users.add("test2@oscm.org");
-    when(authentication.getPrincipal()).thenReturn(users);
 
-    // when
-    boolean authenticated = authService.isUserAlreadyAuthenticated();
+    @Test
+    void testIsUserAlreadyAuthenticated_whenUsersExist() {
+        // given
+        Authentication authentication = givenAuthentication();
+        HashSet<String> users = new HashSet<>();
+        users.add("test1@oscm.org");
+        users.add("test2@oscm.org");
+        when(authentication.getPrincipal()).thenReturn(users);
 
-    // then
-    assertTrue(authenticated);
-  }
+        // when
+        boolean authenticated = authService.isUserAlreadyAuthenticated();
 
-  @Test
-  void testGetUserList_whenAnonymousUser() {
-    // given
-    Authentication authentication = mock(Authentication.class);
-    when(authService.getAuthentication()).thenReturn(authentication);
-    when(authentication.getPrincipal()).thenReturn("anonymousUser");
+        // then
+        assertTrue(authenticated);
+    }
 
-    // when
-    Set<String> userList = authService.getUserList();
 
-    // then
-    assertThat(userList).isEmpty();
-  }
+    @Test
+    void testGetUserList_whenAnonymousUser() {
+        // given
+        Authentication authentication = mock(Authentication.class);
+        when(authService.getAuthentication()).thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn("anonymousUser");
 
-  @Test
-  void testGetUserList_whenUsersExist() {
-    // given
-    Authentication authentication = mock(Authentication.class);
-    when(authService.getAuthentication()).thenReturn(authentication);
-    HashSet<String> users = new HashSet<>();
-    users.add("test1@oscm.org");
-    users.add("test2@oscm.org");
-    when(authentication.getPrincipal()).thenReturn(users);
+        // when
+        Set<String> userList = authService.getUserList();
 
-    // when
-    Set<String> userList = authService.getUserList();
+        // then
+        assertThat(userList).isEmpty();
+    }
 
-    // then
-    assertThat(userList).containsExactly("test1@oscm.org", "test2@oscm.org");
-  }
+    @Test
+    void testGetUserList_whenUsersExist() {
+        // given
+        Authentication authentication = mock(Authentication.class);
+        when(authService.getAuthentication()).thenReturn(authentication);
+        HashSet<String> users = new HashSet<>();
+        users.add("test1@oscm.org");
+        users.add("test2@oscm.org");
+        when(authentication.getPrincipal()).thenReturn(users);
+
+        // when
+        Set<String> userList = authService.getUserList();
+
+        // then
+        assertThat(userList).containsExactly("test1@oscm.org", "test2@oscm.org");
+    }
+
+    private void givenAnonymousAuthentication() {
+        Authentication authentication = mock(AnonymousAuthenticationToken.class);
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(authService.getAuthentication()).thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn("anonymousUser");
+    }
+
+    private Authentication givenAuthentication() {
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(authService.getAuthentication()).thenReturn(authentication);
+        return authentication;
+    }
 }
