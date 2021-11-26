@@ -1,11 +1,3 @@
-/*******************************************************************************
- *                                                                              
- *  Copyright FUJITSU LIMITED 2021                                           
- *                                                                                                                                 
- *  Creation Date: 01.05.2021                                                      
- *                                                                              
- *******************************************************************************/
-
 package org.oscm.mail.controller;
 
 import java.io.IOException;
@@ -26,8 +18,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class SessionFilter implements Filter{
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+       @Override
+       public void init(FilterConfig filterConfig) throws ServletException {
         System.out.println("init filter");
     }
 
